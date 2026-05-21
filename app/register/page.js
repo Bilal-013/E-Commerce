@@ -1,0 +1,166 @@
+'use client';
+
+import { useState } from 'react';
+import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+
+export default function RegisterPage() {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('buyer');
+  const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { register } = useAuth();
+  const router = useRouter();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+    setIsSubmitting(true);
+
+    const res = await register(name, email, password, role);
+    if (!res.success) {
+      setError(res.message);
+      setIsSubmitting(false);
+    } else {
+      router.push('/login');
+    }
+  };
+
+  return (
+    <div className="min-h-[80vh] flex items-center justify-center bg-transparent pt-32 pb-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg border border-[var(--color-primary)]/10">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-heading font-bold text-gray-900">
+            Create an Account
+          </h2>
+          <p className="mt-2 text-center text-sm text-gray-600">
+            Join us to discover authentic Kashmiri craftsmanship.
+          </p>
+        </div>
+        
+        {error && (
+          <div className="bg-red-50 text-red-700 p-3 rounded-md text-sm text-center">
+            {error}
+          </div>
+        )}
+
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <div className="space-y-4 rounded-md shadow-sm">
+            <div>
+              <label 
+                htmlFor="name" 
+                className="block text-sm font-medium text-gray-700"
+              >
+                Full Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                autoComplete="name"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
+                placeholder="John Doe"
+              />
+            </div>
+            <div>
+              <label 
+                htmlFor="email" 
+                className="block text-sm font-medium text-gray-700"
+              >
+                Email address
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
+                placeholder="you@example.com"
+              />
+            </div>
+            <div>
+              <label 
+                htmlFor="password" 
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="new-password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
+                placeholder="••••••••"
+                minLength={6}
+              />
+            </div>
+            
+            <div className="pt-2">
+              <span className="block text-sm font-medium text-gray-700 mb-2">Account Type</span>
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center">
+                  <input
+                    id="role-buyer"
+                    name="role"
+                    type="radio"
+                    value="buyer"
+                    checked={role === 'buyer'}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="h-4 w-4 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-gray-300"
+                  />
+                  <label htmlFor="role-buyer" className="ml-2 block text-sm text-gray-900">
+                    Buyer
+                  </label>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    id="role-seller"
+                    name="role"
+                    type="radio"
+                    value="seller"
+                    checked={role === 'seller'}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="h-4 w-4 text-[var(--color-primary)] focus:ring-[var(--color-primary)] border-gray-300"
+                  />
+                  <label htmlFor="role-seller" className="ml-2 block text-sm text-gray-900">
+                    Seller
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-[#5e3b2e] hover:bg-[#4a2e24] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#5e3b2e] disabled:opacity-70 transition-colors"
+            >
+              {isSubmitting ? 'Creating account...' : 'Create account'}
+            </button>
+          </div>
+        </form>
+
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Already have an account?{' '}
+          <Link href="/login" className="font-medium text-[#5e3b2e] hover:underline">
+            Sign in
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}

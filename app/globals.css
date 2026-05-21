@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+/* ─── Kashmiri Heritage Design Tokens (Tailwind v4 @theme) ─────────── */
+@theme {
+  /* Colors */
+  --color-saffron-50:  #fff8e1;
+  --color-saffron-100: #ffecb3;
+  --color-saffron-200: #ffe082;
+  --color-saffron-300: #ffd54f;
+  --color-saffron-400: #ffca28;
+  --color-saffron-500: #f5a623;   /* primary saffron gold */
+  --color-saffron-600: #e09010;
+  --color-saffron-700: #c47a08;
+  --color-saffron-800: #a06200;
+  --color-saffron-900: #7a4800;
+
+  --color-maroon-50:  #fce4ec;
+  --color-maroon-100: #f8bbd9;
+  --color-maroon-200: #f48fb1;
+  --color-maroon-300: #ec6a88;
+  --color-maroon-400: #d94f6d;
+  --color-maroon-500: #8b1a2d;   /* deep maroon */
+  --color-maroon-600: #7b1528;
+  --color-maroon-700: #6a1022;
+  --color-maroon-800: #580b1b;
+  --color-maroon-900: #3e0611;
+
+  --color-cream-50:  #fdfaf5;
+  --color-cream-100: #faf4e8;
+  --color-cream-200: #f5e9d0;
+  --color-cream-300: #eddcb8;
+  --color-cream-400: #e0cc9a;
+  --color-cream-500: #d4bc7e;
+
+  --color-slate-warm-900: #1a1410;
+  --color-slate-warm-800: #2d2218;
+  --color-slate-warm-700: #3f3024;
+
+  /* Typography */
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "Inter", system-ui, sans-serif;
+
+  /* Spacing extras */
+  --spacing-18: 4.5rem;
+  --spacing-22: 5.5rem;
+  --spacing-88: 22rem;
+  --spacing-128: 32rem;
+
+  /* Border radius extras */
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+}
+
+/* ─── Base Styles ───────────────────────────────────────────────────── */
+:root {
+  --background: #fdfaf5;
+  --foreground: #1a1410;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Utility Classes ───────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+/* ─── Gradient Backgrounds ──────────────────────────────────────────── */
+.bg-kashmiri-gradient {
+  background: linear-gradient(135deg, #8b1a2d 0%, #3e0611 50%, #1a1410 100%);
+}
+
+.bg-saffron-gradient {
+  background: linear-gradient(135deg, #f5a623 0%, #e09010 100%);
+}
+
+.bg-hero-pattern {
+  background-color: #1a1410;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 26, 45, 0.4), transparent),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245, 166, 35, 0.12), transparent);
+}
+
+/* ─── Shimmer Animation ─────────────────────────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    #f5a623 0%,
+    #ffe082 40%,
+    #f5a623 60%,
+    #e09010 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ─── Float Animation ───────────────────────────────────────────────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px);   }
+  50%       { transform: translateY(-12px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ─── Fade Up Animation ─────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.7s ease-out forwards;
+}
+
+.animate-fade-up-delay-1 { animation: fadeUp 0.7s 0.15s ease-out both; }
+.animate-fade-up-delay-2 { animation: fadeUp 0.7s 0.30s ease-out both; }
+.animate-fade-up-delay-3 { animation: fadeUp 0.7s 0.45s ease-out both; }
+.animate-fade-up-delay-4 { animation: fadeUp 0.7s 0.60s ease-out both; }
+
+/* ─── Card Hover Effect ─────────────────────────────────────────────── */
+.card-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px rgba(139, 26, 45, 0.2);
+}
+
+/* ─── Ornamental Divider ────────────────────────────────────────────── */
+.ornament-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.ornament-divider::before,
+.ornament-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f5a623, transparent);
+}
+
+/* ─── Scrollbar Styling ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1a1410; }
+::-webkit-scrollbar-thumb { background: #8b1a2d; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #f5a623; }
