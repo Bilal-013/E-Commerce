@@ -10,6 +10,7 @@ export default function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('buyer');
+  const [phone, setPhone] = useState('');
   const [error, setError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register } = useAuth();
@@ -20,7 +21,8 @@ export default function RegisterPage() {
     setError(null);
     setIsSubmitting(true);
 
-    const res = await register(name, email, password, role);
+    const extraData = role === 'seller' ? { phone } : {};
+    const res = await register(name, email, password, role, extraData);
     if (!res.success) {
       setError(res.message);
       setIsSubmitting(false);
@@ -141,6 +143,27 @@ export default function RegisterPage() {
                 </div>
               </div>
             </div>
+
+            {role === 'seller' && (
+              <div className="pt-2 animate-fade-up">
+                <label 
+                  htmlFor="phone" 
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Contact Phone Number
+                </label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-[var(--color-primary)] focus:border-[var(--color-primary)] sm:text-sm"
+                  placeholder="+92 300 0000000"
+                />
+              </div>
+            )}
           </div>
 
           <div>

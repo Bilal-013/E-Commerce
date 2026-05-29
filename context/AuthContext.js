@@ -69,14 +69,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (name, email, password, role) => {
+  const register = async (name, email, password, role, extraData = {}) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      // Create user document with selected role
+      // Create user document with selected role and extra data (like phone)
       await setDoc(doc(db, 'users', userCredential.user.uid), {
         name,
         email,
         role: role,
+        ...extraData,
         createdAt: new Date().toISOString()
       });
       return { success: true };

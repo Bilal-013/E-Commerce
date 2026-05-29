@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import { db } from '@/lib/firebase';
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { staticDummyProducts } from '@/lib/dummyData';
 
 export default async function ShopPage({ searchParams }) {
   const resolvedSearchParams = await searchParams;
@@ -16,14 +15,10 @@ export default async function ShopPage({ searchParams }) {
   }
 
   const querySnapshot = await getDocs(q);
-  const dbProducts = querySnapshot.docs.map(doc => ({
+  const products = querySnapshot.docs.map(doc => ({
     _id: doc.id,
     ...doc.data()
   }));
-
-  const localProducts = category === 'All' ? staticDummyProducts : staticDummyProducts.filter(p => p.category === category);
-  
-  const products = [...dbProducts, ...localProducts];
 
   const categories = ['All', 'Shawls', 'Hats', 'Accessories', 'Embroidery'];
 

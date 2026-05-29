@@ -5,7 +5,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { db } from '@/lib/firebase';
-import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import { collection, getDocs, query, where, doc, updateDoc, getDoc, deleteDoc } from 'firebase/firestore';
 
 export default function BuyerDashboard() {
   const { user, loading } = useAuth();
@@ -39,7 +39,45 @@ export default function BuyerDashboard() {
       }));
       // Sort in JS instead of compound query to omit manual Firebase indexing
       fetchedOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-      setOrders(fetchedOrders);
+
+      // Filter out orders based on status logic:
+      // 1. Instantly hide "Cancelled"
+      // 2. Hide "not proceeded" if older than 24 hours
+      const now = new Date();
+      const validOrders = fetchedOrders.filter((order) => {
+        if (order.status?.toLowerCase() === 'cancelled') {
+          return false; // Already deleted or should be hidden
+        }
+        if (order.status?.toLowerCase() === 'not proceeded') {
+          const orderDate = new Date(order.createdAt);
+          const hoursDiff = (now - orderDate) / (1000 * 60 * 60);
+          if (hoursDiff > 24) {
+            // Initiate background deletion for expired 'not proceeded' order
+            deleteDoc(doc(db, 'orders', order._id)).catch(console.error);
+            return false;
+          }
+        }
+        return true;
+      });
+
+      // Fetch seller info for orders that are "order placed"
+      const enrichedOrders = await Promise.all(validOrders.map(async (order) => {
+        if (order.status === 'order placed' && order.involvedSellers?.length > 0) {
+          // Just get the first seller's contact for simplicity
+          const sellerId = order.involvedSellers[0];
+          try {
+            const sellerDoc = await getDoc(doc(db, 'users', sellerId));
+            if (sellerDoc.exists()) {
+              const sData = sellerDoc.data();
+              return { ...order, sellerContact: sData.phone || sData.email || 'No contact provided' };
+            }
+          // eslint-disable-next-line no-unused-vars
+          } catch(e) {}
+        }
+        return order;
+      }));
+
+      setOrders(enrichedOrders);
     } catch (error) {
       console.error('Failed to fetch orders', error);
     } finally {
@@ -48,12 +86,26 @@ export default function BuyerDashboard() {
   };
 
   const getStatusColor = (status) => {
-    switch (status) {
-      case 'Pending': return 'bg-yellow-100 text-yellow-800';
-      case 'Processing': return 'bg-blue-100 text-blue-800';
-      case 'Shipped': return 'bg-indigo-100 text-indigo-800';
-      case 'Delivered': return 'bg-green-100 text-green-800';
+    switch (status?.toLowerCase()) {
+      case 'pending': return 'bg-yellow-100 text-yellow-800';
+      case 'order placed': return 'bg-blue-100 text-blue-800';
+      case 'not proceeded': return 'bg-red-100 text-red-800';
+      case 'cancelled': return 'bg-gray-200 text-gray-800';
+      case 'shipped': return 'bg-indigo-100 text-indigo-800';
+      case 'delivered': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const cancelOrder = async (orderId) => {
+    if (!window.confirm("Are you sure you want to cancel this order?")) return;
+    try {
+      // Delete the order entirely from the database
+      await deleteDoc(doc(db, 'orders', orderId));
+      // Remove it from the local state so it instantly disappears from the UI
+      setOrders(prev => prev.filter(o => o._id !== orderId));
+    } catch (err) {
+      alert('Error cancelling order: ' + err.message);
     }
   };
 
@@ -90,12 +142,20 @@ export default function BuyerDashboard() {
                       </p>
                     </div>
                     <div className="mt-4 sm:mt-0 flex flex-col sm:items-end">
-                      <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide ${getStatusColor(order.status)}`}>
+                      <span className={`inline-flex px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide flex items-center justify-center ${getStatusColor(order.status)}`}>
                         {order.status}
                       </span>
                       <p className="mt-2 font-bold text-gray-900 text-lg">
                         Total: PKR {order.totalAmount}
                       </p>
+                      {order.status === 'Pending' && (
+                        <button 
+                          onClick={() => cancelOrder(order._id)}
+                          className="mt-2 text-xs text-red-600 hover:text-red-800 underline font-semibold"
+                        >
+                          Cancel Order
+                        </button>
+                      )}
                     </div>
                   </div>
 
@@ -127,6 +187,12 @@ export default function BuyerDashboard() {
                     <p>{order.shippingAddress.street}, {order.shippingAddress.city}</p>
                     <p>{order.shippingAddress.state} - {order.shippingAddress.zipCode}</p>
                     <p className="mt-2"><span className="font-medium">Payment:</span> {order.paymentMethod}</p>
+                    {order.status === 'order placed' && order.sellerContact && (
+                      <div className="mt-4 p-3 bg-blue-50 text-blue-900 rounded border border-blue-100">
+                        <p className="font-bold mb-1 border-b border-blue-200 pb-1">Seller Contact Details</p>
+                        <p>Your order has been accepted! You can contact the seller at: <strong>{order.sellerContact}</strong></p>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}

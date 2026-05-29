@@ -4,9 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { FiEdit, FiTrash2, FiPlus, FiImage } from 'react-icons/fi';
-import { db, storage } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import { collection, addDoc, getDocs, query, where, deleteDoc, updateDoc, doc } from 'firebase/firestore';
-import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function SellerDashboard() {
   const { user, loading } = useAuth();
@@ -76,10 +75,24 @@ export default function SellerDashboard() {
         throw new Error('Please select an image for your product.');
       }
 
-      // 1. Upload image to Firebase Storage
-      const imageRef = storageRef(storage, `products/${Date.now()}_${imageFile.name}`);
-      await uploadBytes(imageRef, imageFile);
-      const imageUrl = await getDownloadURL(imageRef);
+      // 1. Upload image to Cloudinary (Unsigned)
+      const formData = new FormData();
+      formData.append('file', imageFile);
+      formData.append('upload_preset', 'ecommerce_preset'); // Make sure to configure this in Cloudinary
+
+      const res = await fetch('https://api.cloudinary.com/v1_1/drbb32h7a/image/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      const errorData = await res.clone().json().catch(() => null);
+      if (!res.ok) {
+        console.error('Cloudinary Error Data:', errorData);
+        throw new Error(`Image upload to Cloudinary failed: ${errorData?.error?.message || res.statusText}`);
+      }
+
+      const data = await res.json();
+      const imageUrl = data.secure_url;
 
       // 2. Create Product in Firestore
       await addDoc(collection(db, 'products'), {
@@ -298,23 +311,31 @@ export default function SellerDashboard() {
                       </div>
                       <p className="mt-2 text-sm text-gray-600 line-clamp-2 flex-grow">{product.description}</p>
                       
-                      <div className="mt-4 pt-4 border-t border-gray-100 flex justify-between items-center">
-                        <button
-                          onClick={() => handleToggleStock(product)}
-                          className={`text-xs px-3 py-1.5 rounded-md font-medium transition-colors ${
-                            product.inStock 
-                              ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' 
-                              : 'bg-green-100 text-green-800 hover:bg-green-200'
-                          }`}
-                        >
-                          {product.inStock ? 'Mark Out of Stock' : 'Mark In Stock'}
-                        </button>
-                        
-                        <div className="flex space-x-2">
-                          <button onClick={() => handleDelete(product._id)} className="text-gray-400 hover:text-red-500 transition-colors p-1.5 bg-gray-50 rounded-md hover:bg-red-50">
-                            <FiTrash2 size={18} />
+                      <div className="mt-4 pt-4 border-t border-gray-100 flex flex-col gap-3">
+                        <div className="flex justify-between items-center">
+                          <button
+                            onClick={() => handleToggleStock(product)}
+                            className={`text-xs px-3 py-1.5 rounded-md font-medium transition-colors ${
+                              product.inStock 
+                                ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' 
+                                : 'bg-green-100 text-green-800 hover:bg-green-200'
+                            }`}
+                          >
+                            {product.inStock ? 'Mark Out of Stock' : 'Mark In Stock'}
                           </button>
+                          
+                          <div className="flex space-x-2">
+                            <button onClick={() => handleDelete(product._id)} className="text-gray-400 hover:text-red-500 transition-colors p-1.5 bg-gray-50 rounded-md hover:bg-red-50" aria-label="Delete Product">
+                              <FiTrash2 size={18} />
+                            </button>
+                          </div>
                         </div>
+                        <button
+                          onClick={() => router.push(`/seller/product-orders/${product._id}`)}
+                          className="w-full bg-[#5e3b2e] hover:bg-[#4a2e24] text-white text-sm font-medium py-2 rounded-md transition-colors"
+                        >
+                          View Buyers & Orders
+                        </button>
                       </div>
                     </div>
                   </div>

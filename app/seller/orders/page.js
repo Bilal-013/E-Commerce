@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs, orderBy } from 'firebase/firestore';
+import { collection, query, where, getDocs, doc, updateDoc } from 'firebase/firestore';
 
 export default function SellerOrdersPage() {
   const { user, loading } = useAuth();
@@ -47,6 +47,17 @@ export default function SellerOrdersPage() {
     }
   }, [user, loading, router]);
 
+  const handleUpdateStatus = async (orderId, newStatus) => {
+    try {
+      const orderRef = doc(db, 'orders', orderId);
+      await updateDoc(orderRef, { status: newStatus });
+      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: newStatus } : o));
+    } catch (error) {
+      console.error('Failed to update status:', error);
+      alert('Failed to update status');
+    }
+  };
+
   if (loading || fetching) {
     return <div className="min-h-[80vh] pt-32 flex justify-center items-center">Loading Orders...</div>;
   }
@@ -77,6 +88,25 @@ export default function SellerOrdersPage() {
                       <div className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
                         Payment: Cash on Delivery - Collect on Arrival
                       </div>
+                      <div className="mt-2 text-sm font-medium">
+                        Status: <span className="uppercase text-[var(--color-primary)]">{order.status || 'Pending'}</span>
+                      </div>
+                      {(order.status === 'Pending' || !order.status) && (
+                        <div className="mt-4 flex gap-2">
+                          <button 
+                            onClick={() => handleUpdateStatus(order.id, 'order placed')}
+                            className="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded text-xs font-bold"
+                          >
+                            Accept Order
+                          </button>
+                          <button 
+                            onClick={() => handleUpdateStatus(order.id, 'not proceeded')}
+                            className="bg-red-600 hover:bg-red-700 text-white px-3 py-1.5 rounded text-xs font-bold"
+                          >
+                            Reject
+                          </button>
+                        </div>
+                      )}
                     </div>
                     <div className="text-left sm:text-right">
                       <p className="text-sm font-medium text-gray-500">Customer Details:</p>

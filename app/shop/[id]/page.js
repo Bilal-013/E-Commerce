@@ -2,27 +2,19 @@ import { notFound } from 'next/navigation';
 import AddToCartButton from './AddToCartButton';
 import { db } from '@/lib/firebase';
 import { doc, getDoc } from 'firebase/firestore';
-import { staticDummyProducts } from '@/lib/dummyData';
 
 export default async function ProductDetailPage({ params }) {
   const resolvedParams = await params;
   const productId = resolvedParams.id;
   
-  let product = null;
-  const localProduct = staticDummyProducts.find(p => p._id === productId);
+  const docRef = doc(db, 'products', productId);
+  const docSnap = await getDoc(docRef);
   
-  if (localProduct) {
-    product = localProduct;
-  } else {
-    const docRef = doc(db, 'products', productId);
-    const docSnap = await getDoc(docRef);
-    
-    if (!docSnap.exists()) {
-      notFound();
-    }
-  
-    product = { _id: docSnap.id, ...docSnap.data() };
+  if (!docSnap.exists()) {
+    notFound();
   }
+
+  const product = { _id: docSnap.id, ...docSnap.data() };
 
   return (
     <div className="min-h-screen bg-white pt-32 pb-12 px-4 sm:px-6 lg:px-8">

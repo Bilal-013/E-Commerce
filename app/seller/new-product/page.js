@@ -3,9 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { db, storage } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function NewProductPage() {
   const { user, loading } = useAuth();
@@ -36,19 +35,34 @@ export default function NewProductPage() {
     setError('');
 
     try {
-      // 1. Upload Image
-      const storageRef = ref(storage, `products/${Date.now()}_${imageFile.name}`);
-      const snapshot = await uploadBytes(storageRef, imageFile);
-      const imageUrl = await getDownloadURL(snapshot.ref);
+      // 1. Upload Image to Cloudinary (Unsigned)
+      const formData = new FormData();
+      formData.append('file', imageFile);
+      formData.append('upload_preset', 'ecommerce_preset'); // Remember to create this in Cloudinary
+      
+      const res = await fetch('https://api.cloudinary.com/v1_1/drbb32h7a/image/upload', {
+        method: 'POST',
+        body: formData
+      });
+      
+      const errorData = await res.clone().json().catch(() => null);
+      if (!res.ok) {
+        console.error('Cloudinary Error Data:', errorData);
+        throw new Error(`Image upload failed: ${errorData?.error?.message || res.statusText}`);
+      }
+      
+      const data = await res.json();
+      const imageUrl = data.secure_url;
 
       // 2. Save Document to Firestore
       await addDoc(collection(db, 'products'), {
-        name,
+        title: name,
         description,
         category,
         price: Number(price),
         imageUrl,
         sellerId: user.uid,
+        inStock: true,
         createdAt: new Date().toISOString()
       });
 

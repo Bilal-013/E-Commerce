@@ -91,10 +91,10 @@ export default function SellerProductsPage() {
                 <span className="text-xs text-[var(--color-primary)] uppercase font-semibold mb-1">
                   {product.category}
                 </span>
-                <h3 className="text-lg font-bold text-gray-900 mb-2 truncate" title={product.name}>
-                  {product.name}
+                <h3 className="text-lg font-bold text-gray-900 mb-2 truncate" title={product.title || product.name}>
+                  {product.title || product.name}
                 </h3>
-                <p className="text-gray-600 font-medium mb-4">${parseFloat(product.price).toFixed(2)}</p>
+                <p className="text-gray-600 font-medium mb-4">PKR {product.price}</p>
                 <div className="mt-auto">
                   <p className="text-xs text-gray-400">
                     Added: {new Date(product.createdAt).toLocaleDateString()}

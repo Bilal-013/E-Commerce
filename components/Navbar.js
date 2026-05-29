@@ -6,12 +6,14 @@ import { usePathname } from 'next/navigation';
 import { FiShoppingCart, FiUser, FiMenu, FiX, FiSearch, FiLogOut } from 'react-icons/fi';
 import { GiFleurDeLys } from 'react-icons/gi';
 import { useAuth } from '@/context/AuthContext';
+import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuth();
+  const { cart, mounted } = useCart();
 
   const isHome = pathname === '/';
   const showSolidNav = scrolled || !isHome;
@@ -78,25 +80,21 @@ export default function Navbar() {
 
           {/* Right Icons */}
           <div className="flex items-center gap-4">
-            <button
-              id="nav-search"
-              aria-label="Search"
-              className="hidden md:flex w-9 h-9 items-center justify-center rounded-full text-[#faf4e8]/70 hover:text-[#f5a623] hover:bg-[#f5a623]/10 transition-all duration-300"
-            >
-              <FiSearch className="text-lg" />
-            </button>
-
-            <Link
-              href="/cart"
-              id="nav-cart"
-              aria-label="Cart"
-              className="relative flex w-9 h-9 items-center justify-center rounded-full text-[#faf4e8]/70 hover:text-[#f5a623] hover:bg-[#f5a623]/10 transition-all duration-300"
-            >
-              <FiShoppingCart className="text-lg" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#8b1a2d] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-                0
-              </span>
-            </Link>
+            {user?.role !== 'seller' && (
+              <Link
+                href={user ? "/cart" : "/login"}
+                id="nav-cart"
+                aria-label="Cart"
+                className="relative flex w-9 h-9 items-center justify-center rounded-full text-[#faf4e8]/70 hover:text-[#f5a623] hover:bg-[#f5a623]/10 transition-all duration-300"
+              >
+                <FiShoppingCart className="text-lg" />
+                {user && mounted && cart.length > 0 && (
+                  <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#8b1a2d] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                    {cart.reduce((total, item) => total + item.quantity, 0)}
+                  </span>
+                )}
+              </Link>
+            )}
 
             {user ? (
               <div className="hidden md:flex items-center gap-3">
