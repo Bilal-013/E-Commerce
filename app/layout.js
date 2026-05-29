@@ -6,14 +6,14 @@ import { CartProvider } from '@/context/CartContext';
 
 export const metadata = {
   title: {
-    default: 'Kashmir Luxe — Authentic Kashmiri Heritage Crafts',
-    template: '%s | Kashmir Luxe',
+    default: 'Rang, Resham and Rooh',
+    template: '%s | Rang, Resham and Rooh',
   },
   description:
     'Discover authentic Pashmina shawls, Karakul caps, and intricate Kashmiri embroidery. Handcrafted by master artisans in the Kashmir Valley.',
   keywords: ['Pashmina', 'Kashmiri shawls', 'Karakul', 'Kashmir embroidery', 'handcrafted'],
   openGraph: {
-    siteName: 'Kashmir Luxe',
+    siteName: 'Rang, Resham and Rooh',
     locale: 'en_IN',
     type: 'website',
   },
