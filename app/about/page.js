@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { GiWool, GiNeedleJaws } from 'react-icons/gi';
 
 export const metadata = {
-  title: 'About Us | Rang, Resham & Rooh',
+  title: 'About Us | Rang, Resham aur Rooh',
   description: 'Our story and mission to preserve the art of Kashmir.',
 };
 

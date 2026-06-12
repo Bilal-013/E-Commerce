@@ -54,7 +54,7 @@ export default function Navbar() {
             </div>
             <div>
               <span className="font-display text-xl font-bold text-[#ffe082] tracking-wide">
-                Rang Resham and Rooh
+                Rang Resham aur Rooh
               </span>
               <p className="text-[10px] text-[#f5a623]/70 tracking-widest uppercase -mt-0.5">
                 A heritage of Craftsmanship

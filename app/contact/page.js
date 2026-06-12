@@ -1,7 +1,7 @@
 import { FiMail, FiPhone, FiMapPin, FiInstagram } from 'react-icons/fi';
 
 export const metadata = {
-  title: 'Contact Us | Rang, Resham & Rooh',
+  title: 'Contact Us | Rang, Resham aur Rooh',
   description: 'Get in touch with us for inquiries, orders, or support.',
 };
 
