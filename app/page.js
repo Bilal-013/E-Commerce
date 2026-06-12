@@ -1,46 +1,8 @@
 import Link from 'next/link';
 import { FiArrowRight, FiStar, FiShield, FiTruck, FiAward } from 'react-icons/fi';
-import { GiWool, GiNeedleJaws, GiCrown } from 'react-icons/gi';
+import { GiNeedleJaws, GiCrown } from 'react-icons/gi';
 
 /* ── Data ── */
-const categories = [
-  {
-    id: 'pashmina',
-    title: 'Pashmina Shawls',
-    subtitle: 'Woven from the finest Changthangi goat wool',
-    emoji: '🧣',
-    Icon: GiWool,
-    description:
-      'Pure Pashmina, hand-spun and hand-woven in the Himalayan tradition. Each shawl takes 72+ hours of artisan labour.',
-    badge: 'Best Seller',
-    priceFrom: 'PKR 8,500',
-    color: '#8b1a2d',
-  },
-  {
-    id: 'karakul',
-    title: 'Karakul Caps',
-    subtitle: 'Symbol of Kashmiri royalty for centuries',
-    emoji: '🎩',
-    Icon: GiCrown,
-    description:
-      'The iconic Karakul — worn by rulers and statesmen alike. Crafted from premium lambskin with intricate finishing.',
-    badge: 'Heritage Piece',
-    priceFrom: 'PKR 4,200',
-    color: '#3e0611',
-  },
-  {
-    id: 'embroidery',
-    title: 'Kashmiri Embroidery',
-    subtitle: 'Sozni & Aari needlework masterpieces',
-    emoji: '🪡',
-    Icon: GiNeedleJaws,
-    description:
-      'Delicate Sozni and bold Aari embroidery on silk and wool. Each piece carries the legacy of Kashmir\'s master craftsmen.',
-    badge: 'Artisan Pick',
-    priceFrom: 'PKR 3,800',
-    color: '#7a4800',
-  },
-];
 
 const testimonials = [
   {

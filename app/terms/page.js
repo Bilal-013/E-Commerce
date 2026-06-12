@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Terms of Service - Art of Kashmir',
+  title: 'Terms of Service - Rang Resham aur Roohn',
   description: 'Terms and conditions for using our website.',
 };
 
@@ -12,7 +12,7 @@ export default function TermsPage() {
         <div className="space-y-6 text-gray-600 leading-relaxed">
           <p>
             Welcome to Art of Kashmir. This website is operated by our platform linking independent artisans with buyers globally.
-            By visiting our site and/or purchasing something from us, you engage in our "Service" and agree to be bound by the following terms and conditions.
+            By visiting our site and/or purchasing something from us, you engage in our Service and agree to be bound by the following terms and conditions.
           </p>
 
           <h2 className="text-xl font-bold text-gray-900 mt-6 mb-2">1. General Conditions</h2>
