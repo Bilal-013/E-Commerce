@@ -67,7 +67,7 @@ export default function SellerProductsPage() {
 
       {products.length === 0 ? (
         <div className="bg-white rounded-xl shadow-sm p-12 text-center border border-gray-100">
-          <p className="text-gray-500 mb-4">You haven't uploaded any products yet.</p>
+          <p className="text-gray-500 mb-4">You have not uploaded any products yet.</p>
           <Link 
             href="/seller/new-product"
             className="text-[var(--color-primary)] font-medium hover:underline"

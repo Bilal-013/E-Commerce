@@ -17,11 +17,11 @@ export default async function ProductDetailPage({ params }) {
   const product = { _id: docSnap.id, ...docSnap.data() };
 
   return (
-    <div className="min-h-screen bg-white pt-32 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--background)] transition-colors duration-300 pt-32 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="lg:grid lg:grid-cols-2 lg:gap-x-12 xl:gap-x-16">
           {/* Image */}
-          <div className="aspect-[4/5] overflow-hidden rounded-xl bg-gray-100">
+          <div className="aspect-[4/5] overflow-hidden rounded-xl bg-gray-100 dark:bg-gray-800">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={product.imageUrl}
@@ -32,19 +32,19 @@ export default async function ProductDetailPage({ params }) {
 
           {/* Product Info */}
           <div className="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-            <h1 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl font-heading">
+            <h1 className="text-3xl font-extrabold tracking-tight text-[var(--foreground)] sm:text-4xl font-heading">
               {product.title}
             </h1>
             
             <div className="mt-3">
               <h2 className="sr-only">Product information</h2>
-              <p className="text-3xl font-bold text-[#5e3b2e]">PKR {product.price}</p>
+              <p className="text-3xl font-bold text-[#5e3b2e] dark:text-[#f5a623]">PKR {product.price}</p>
             </div>
 
             <div className="mt-6">
               <div className="flex items-center">
-                <p className="text-sm font-medium text-gray-500 mr-4">Category:</p>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#ebdcd1] text-[#4a2e24]">
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mr-4">Category:</p>
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#ebdcd1] dark:bg-[#3f3024] text-[#4a2e24] dark:text-[#f5a623]">
                   {product.category}
                 </span>
               </div>
@@ -52,7 +52,7 @@ export default async function ProductDetailPage({ params }) {
 
             <div className="mt-6">
               <h3 className="sr-only">Description</h3>
-              <div className="text-base text-gray-700 space-y-6">
+              <div className="text-base text-gray-700 dark:text-gray-300 space-y-6">
                 <p className="whitespace-pre-line">{product.description}</p>
               </div>
             </div>
@@ -61,11 +61,11 @@ export default async function ProductDetailPage({ params }) {
               <AddToCartButton product={JSON.parse(JSON.stringify(product))} />
             </div>
 
-            <section aria-labelledby="details-heading" className="mt-12 pt-10 border-t border-gray-200">
-              <h2 id="details-heading" className="text-lg font-bold text-gray-900 mb-4">
+            <section aria-labelledby="details-heading" className="mt-12 pt-10 border-t border-gray-200 dark:border-gray-800">
+              <h2 id="details-heading" className="text-lg font-bold text-[var(--foreground)] mb-4">
                 Shipping & Returns
               </h2>
-              <ul className="text-sm text-gray-600 space-y-2 list-disc pl-5">
+              <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-2 list-disc pl-5">
                 <li>Free shipping on all orders across India.</li>
                 <li>Handcrafted items may take 5-7 business days to process.</li>
                 <li>Secure packaging to protect delicate Pashmina and Embroidery.</li>

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: 'Terms of Service - Rang Resham aur Roohn',
+  title: 'Terms of Service - کشمیری ورثہ',
   description: 'Terms and conditions for using our website.',
 };
 

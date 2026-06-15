@@ -23,26 +23,26 @@ export default async function ShopPage({ searchParams }) {
   const categories = ['All', 'Shawls', 'Hats', 'Accessories', 'Embroidery'];
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-32 pb-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--background)] transition-colors duration-300 pt-32 pb-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-8 sm:text-4xl text-center font-heading">
+        <h1 className="text-3xl font-extrabold text-[var(--foreground)] mb-8 sm:text-4xl text-center font-heading">
           Our Collection
         </h1>
 
         <div className="flex flex-col md:flex-row gap-8">
           {/* Sidebar Filters */}
           <div className="w-full md:w-64 flex-shrink-0">
-            <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 sticky top-24">
-              <h2 className="text-lg font-bold text-gray-900 mb-4">Categories</h2>
+            <div className="bg-white dark:bg-[#2d2218] transition-colors duration-300 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 sticky top-24">
+              <h2 className="text-lg font-bold text-[var(--foreground)] mb-4">Categories</h2>
               <ul className="space-y-3">
                 {categories.map((cat) => (
                   <li key={cat}>
                     <Link 
                       href={`/shop${cat === 'All' ? '' : `?category=${cat}`}`}
-                      className={`block px-3 py-2 rounded-md transition-colors ${
+                      className={`block px-3 py-2 rounded-xl transition-colors ${
                         category === cat 
-                          ? 'bg-[#5e3b2e] text-white font-medium' 
-                          : 'text-gray-600 hover:bg-[#ebdcd1] hover:text-[#4a2e24]'
+                          ? 'bg-[#5e3b2e] dark:bg-[#8b1a2d] text-white font-medium' 
+                          : 'text-gray-600 dark:text-gray-300 hover:bg-[#ebdcd1] dark:hover:bg-[#3f3024] hover:text-[#4a2e24] dark:hover:text-[#f5a623]'
                       }`}
                     >
                       {cat === 'Hats' && cat !== category && category !== 'Hats' ? 'Karakul Hats' : 
@@ -57,13 +57,13 @@ export default async function ShopPage({ searchParams }) {
           {/* Product Grid */}
           <div className="flex-1">
             {products.length === 0 ? (
-              <div className="bg-white p-12 text-center rounded-lg shadow-sm border border-gray-100">
-                <p className="text-lg text-gray-500">No products found for this category.</p>
+              <div className="bg-white dark:bg-[#2d2218] transition-colors duration-300 p-12 text-center rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
+                <p className="text-lg text-gray-500 dark:text-gray-400">No products found for this category.</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {products.map((product) => (
-                  <Link href={`/shop/${product._id}`} key={product._id} className="group flex flex-col bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
+                  <Link href={`/shop/${product._id}`} key={product._id} className="group flex flex-col bg-white dark:bg-[#2d2218] transition-colors duration-300 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-md dark:hover:border-gray-600 transition-all">
                     <div className="aspect-[4/5] bg-gray-200 relative overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img 
@@ -78,13 +78,13 @@ export default async function ShopPage({ searchParams }) {
                       )}
                     </div>
                     <div className="p-5 flex-grow flex flex-col">
-                      <p className="text-sm text-[#5e3b2e] font-medium mb-1">{product.category}</p>
-                      <h3 className="text-lg font-bold text-gray-900 line-clamp-1 mb-2">
+                      <p className="text-sm text-[#5e3b2e] dark:text-[#f5a623] font-medium mb-1">{product.category}</p>
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white line-clamp-1 mb-2">
                         {product.title}
                       </h3>
                       <div className="mt-auto flex items-center justify-between">
-                        <p className="text-lg font-bold text-gray-900">PKR {product.price}</p>
-                        <span className="text-sm font-medium text-[#5e3b2e] group-hover:underline">View Details &rarr;</span>
+                        <p className="text-lg font-bold text-gray-900 dark:text-white">PKR {product.price}</p>
+                        <span className="text-sm font-medium text-[#5e3b2e] dark:text-[#f5a623] group-hover:underline">View Details &rarr;</span>
                       </div>
                     </div>
                   </Link>

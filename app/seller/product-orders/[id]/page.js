@@ -90,7 +90,7 @@ export default function ProductOrdersPage({ params }) {
         
         {product && (
           <div className="mb-8 flex items-center gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
-            {product.imageUrl && <img src={product.imageUrl} className="h-16 w-16 object-cover rounded" alt={product.title} />}
+            {product.imageUrl && <image src={product.imageUrl} className="h-16 w-16 object-cover rounded" alt={product.title} />}
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Orders for: {product.title}</h1>
               <p className="text-gray-500 text-sm">Listing Price: PKR {product.price}</p>

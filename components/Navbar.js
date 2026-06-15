@@ -3,17 +3,19 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FiShoppingCart, FiUser, FiMenu, FiX, FiSearch, FiLogOut } from 'react-icons/fi';
+import { FiShoppingCart, FiUser, FiMenu, FiX, FiSearch, FiLogOut, FiSun, FiMoon } from 'react-icons/fi';
 import { GiFleurDeLys } from 'react-icons/gi';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuth();
-  const { cart, mounted } = useCart();
+  const { cart, mounted: cartMounted } = useCart();
+  const { isDark, toggleTheme, mounted: themeMounted } = useTheme();
 
   const isHome = pathname === '/';
   const showSolidNav = scrolled || !isHome;
@@ -41,7 +43,7 @@ export default function Navbar() {
     >
       {/* Top announcement bar */}
       <div className="bg-[#8b1a2d] text-[#ffe082] text-center py-2 text-xs tracking-widest font-body uppercase">
-        ✦ Free shipping on orders over PKR 10,000 &nbsp;|&nbsp; Authentic Kashmiri Craftsmanship ✦
+        Free shipping on orders over PKR 40,000 &nbsp;|&nbsp; Authentic Kashmiri Craftsmanship
       </div>
 
       <nav className="max-w-7xl mx-auto px-6 py-4">
@@ -52,11 +54,11 @@ export default function Navbar() {
             <div className="w-10 h-10 rounded-full bg-saffron-gradient flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
               <GiFleurDeLys className="text-white text-xl" />
             </div>
-            <div>
-              <span className="font-display text-xl font-bold text-[#ffe082] tracking-wide">
-                Rang Resham aur Rooh
+            <div className="flex flex-col justify-center">
+              <span className="font-urdu text-4xl font-bold text-[#ffe082] tracking-wide leading-none mb-1">
+                کشمیری ورثہ
               </span>
-              <p className="text-[10px] text-[#f5a623]/70 tracking-widest uppercase -mt-0.5">
+              <p className="text-[10px] text-[#f5a623]/70 tracking-widest uppercase">
                 A heritage of Craftsmanship
               </p>
             </div>
@@ -79,7 +81,16 @@ export default function Navbar() {
           </ul>
 
           {/* Right Icons */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              aria-label="Toggle Dark Mode"
+              className="flex items-center justify-center w-9 h-9 rounded-full text-[#faf4e8]/70 hover:text-[#f5a623] hover:bg-[#f5a623]/10 transition-all duration-300"
+            >
+              {themeMounted && isDark ? <FiSun className="text-lg" /> : <FiMoon className="text-lg" />}
+            </button>
+
             {user?.role !== 'seller' && (
               <Link
                 href={user ? "/cart" : "/login"}
@@ -88,7 +99,7 @@ export default function Navbar() {
                 className="relative flex w-9 h-9 items-center justify-center rounded-full text-[#faf4e8]/70 hover:text-[#f5a623] hover:bg-[#f5a623]/10 transition-all duration-300"
               >
                 <FiShoppingCart className="text-lg" />
-                {user && mounted && cart.length > 0 && (
+                {user && cartMounted && cart.length > 0 && (
                   <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#8b1a2d] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                     {cart.reduce((total, item) => total + item.quantity, 0)}
                   </span>

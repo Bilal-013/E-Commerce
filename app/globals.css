@@ -39,6 +39,7 @@
   /* Typography */
   --font-display: "Playfair Display", Georgia, serif;
   --font-body: "Inter", system-ui, sans-serif;
+  --font-urdu: "Amiri", "Lateef", serif;
 
   /* Spacing extras */
   --spacing-18: 4.5rem;
@@ -51,10 +52,17 @@
   --radius-2xl: 1.5rem;
 }
 
+@custom-variant dark (&:is(.dark *));
+
 /* ─── Base Styles ───────────────────────────────────────────────────── */
 :root {
   --background: #fdfaf5;
   --foreground: #1a1410;
+}
+
+.dark {
+  --background: #1a1410;
+  --foreground: #fdfaf5;
 }
 
 * {
@@ -80,6 +88,10 @@ body {
 
 .font-body {
   font-family: var(--font-body);
+}
+
+.font-urdu {
+  font-family: var(--font-urdu);
 }
 
 /* ─── Gradient Backgrounds ──────────────────────────────────────────── */

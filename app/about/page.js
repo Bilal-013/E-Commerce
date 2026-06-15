@@ -2,31 +2,31 @@ import Link from 'next/link';
 import { GiWool, GiNeedleJaws } from 'react-icons/gi';
 
 export const metadata = {
-  title: 'About Us | Rang, Resham aur Rooh',
+  title: 'About Us | کشمیری ورثہ',
   description: 'Our story and mission to preserve the art of Kashmir.',
 };
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#faf4e8] pt-32 pb-16 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[var(--background)] transition-colors duration-300 pt-32 pb-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto space-y-16">
         
         {/* Header */}
         <div className="text-center space-y-4">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-[#4a2e24] font-heading font-display">
-            About Rang, Resham & Rooh
+          <h1 className="text-4xl md:text-5xl font-extrabold text-[#4a2e24] dark:text-[#f5a623] font-urdu transition-colors duration-300">
+            About کشمیری ورثہ
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-[var(--foreground)]/70 max-w-2xl mx-auto transition-colors duration-300">
             Discover the heritage, the craftsmanship, and the soul of Kashmir woven into every thread.
           </p>
         </div>
 
         {/* Story Section */}
-        <section className="bg-white rounded-2xl p-8 md:p-12 shadow-sm border border-[#f5a623]/10">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#8b1a2d] mb-6 font-display">Our Story</h2>
-          <div className="space-y-4 text-gray-700 leading-relaxed text-lg whitespace-pre-line">
+        <section className="bg-white dark:bg-[#2d2218] transition-colors duration-300 rounded-2xl p-8 md:p-12 shadow-sm border border-[#f5a623]/10 dark:border-[#f5a623]/20">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#8b1a2d] dark:text-[#ec6a88] mb-6 font-display transition-colors duration-300">Our Story</h2>
+          <div className="space-y-4 text-gray-700 dark:text-[#faf4e8]/80 leading-relaxed text-lg whitespace-pre-line transition-colors duration-300">
             <p>
-              Born from a deep love for the breathtaking valleys of Kashmir, <strong>Rang, Resham & Rooh</strong> is a tribute to the timeless artistry that has flourished in the region for centuries. 
+              Born from a deep love for the breathtaking valleys of Kashmir, <strong className="font-urdu text-2xl font-normal">کشمیری ورثہ</strong> is a tribute to the timeless artistry that has flourished in the region for centuries. 
             </p>
             <p>
               &quot;Rang&quot; (Color), &quot;Resham&quot; (Silk), and &quot;Rooh&quot; (Soul)—these three elements form the essence of everything we create. We believe that a true masterpiece is not just about the finest materials, but the passion and spirit infused into it by the artisan.

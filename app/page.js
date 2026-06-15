@@ -120,7 +120,7 @@ export default function HomePage() {
       </section>
 
       {/* ══════════════ CRAFTSMANSHIP STORY ══════════════ */}
-      <section className="bg-[#fdfaf5] py-24 px-6">
+      <section className="bg-[var(--background)] py-24 px-6 transition-colors duration-300">
         <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
           {/* Left: decorative block */}
           <div className="relative">
@@ -142,11 +142,11 @@ export default function HomePage() {
           {/* Right: text */}
           <div className="space-y-6">
             <p className="text-[#f5a623] text-sm tracking-widest uppercase font-medium">Our Heritage</p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold text-[#1a1410] leading-tight">
+            <h2 className="font-display text-4xl md:text-5xl font-bold text-[var(--foreground)] leading-tight">
               The Art of
-              <span className="block text-[#8b1a2d]">Kashmir Valley</span>
+              <span className="block text-[#8b1a2d] dark:text-[#ec6a88]">Kashmir Valley</span>
             </h2>
-            <p className="text-[#3f3024]/70 text-base leading-relaxed">
+            <p className="text-[var(--foreground)]/70 text-base leading-relaxed">
               For over three centuries, Kashmiri artisans have passed down the secrets of Pashmina weaving, 
               Sozni embroidery, and Karakul crafting through generations. Every piece we offer is a living 
               testament to this unbroken chain of mastery.
@@ -162,9 +162,9 @@ export default function HomePage() {
                 { label: 'Countries Served', value: '15+'  },
                 { label: 'GI Certified',     value: '100%' },
               ].map(({ label, value }) => (
-                <div key={label} className="bg-[#faf4e8] rounded-xl p-4 border border-[#eddcb8]">
-                  <div className="font-display text-2xl font-bold text-[#8b1a2d]">{value}</div>
-                  <div className="text-xs text-[#3f3024]/60 mt-1">{label}</div>
+                <div key={label} className="bg-[var(--foreground)]/5 dark:bg-[#faf4e8]/5 rounded-xl p-4 border border-[var(--foreground)]/10 dark:border-[#eddcb8]/20">
+                  <div className="font-display text-2xl font-bold text-[#8b1a2d] dark:text-[#ec6a88]">{value}</div>
+                  <div className="text-xs text-[var(--foreground)]/60 mt-1">{label}</div>
                 </div>
               ))}
             </div>

@@ -3,17 +3,18 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { AuthProvider } from '@/context/AuthContext';
 import { CartProvider } from '@/context/CartContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 
 export const metadata = {
   title: {
-    default: 'Rang, Resham aur Rooh',
-    template: '%s | Rang, Resham aur Rooh',
+    default: 'کشمیری ورثہ',
+    template: '%s | کشمیری ورثہ',
   },
   description:
     'Discover authentic Pashmina shawls, Karakul caps, and intricate Kashmiri embroidery. Handcrafted by master artisans in the Kashmir Valley.',
   keywords: ['Pashmina', 'Kashmiri shawls', 'Karakul', 'Kashmir embroidery', 'handcrafted'],
   openGraph: {
-    siteName: 'Rang, Resham aur Rooh',
+    siteName: 'کشمیری ورثہ',
     locale: 'en_IN',
     type: 'website',
   },
@@ -26,20 +27,22 @@ export default function RootLayout({ children }) {
       <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&family=Amiri:wght@400;700&family=Lateef:wght@400;700&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased min-h-screen flex flex-col bg-[#fdfaf5]">
-        <AuthProvider>
-          <CartProvider>
-            <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </CartProvider>
-        </AuthProvider>
+      <body className="font-body antialiased min-h-screen flex flex-col bg-[var(--background)] text-[var(--foreground)] transition-colors duration-300">
+        <ThemeProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </CartProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
